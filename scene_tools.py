@@ -98,6 +98,14 @@ def draw_new_scene(self, context):
     row.operator(STORYPENCIL_OT_NewScene.bl_idname, text="New Template Scene")
 
 
+def setup_storyboard2(self, context):
+    is_gpencil = context.active_object and context.active_object.name == 'Stroke'
+
+    layout = self.layout
+    if is_gpencil and context.object.type == 'GREASEPENCIL' and context.object.mode == 'PAINT_GREASE_PENCIL':
+        if context.workspace.name in ('2D Animation', '2D Full Canvas') and context.scene.name == 'Scene':
+            layout.operator(STORYPENCIL_OT_Setup.bl_idname, text="Setup StoryPencil Session")
+
 def setup_storyboard(self, context):
     """Add Setup menu option."""
     # For security, check if this is the default template.

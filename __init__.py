@@ -1,21 +1,3 @@
-# SPDX-FileCopyrightText: 2022-2023 Blender Foundation
-#
-# SPDX-License-Identifier: GPL-2.0-or-later
-
-# ----------------------------------------------
-# Define Addon info
-# ----------------------------------------------
-bl_info = {
-    "name": "Storypencil - Storyboard Tools",
-    "description": "Storyboard tools",
-    "author": "Antonio Vazquez, Matias Mendiola, Daniel Martinez Lara, Rodrigo Blaas, Samuel Bernou",
-    "version": (1, 1, 4),
-    "blender": (3, 3, 0),
-    "location": "",
-    "warning": "",
-    "category": "Sequencer",
-}
-
 # ----------------------------------------------
 # Import modules
 # ----------------------------------------------
@@ -229,10 +211,14 @@ def register():
 
     bpy.types.SEQUENCER_MT_add.append(scene_tools.draw_new_scene)
 
-    if bpy.app.version >= (4, 3, 0):
+    if bpy.app.version >= (4, 3, 2):
+            bpy.types.VIEW3D_MT_editor_menus.append(scene_tools.setup_storyboard2)
+        #bpy.types.VIEW3D_MT_paint_grease_pencil.append(scene_tools.setup_storyboard)
+    elif (4, 3, 0) <= bpy.app.version < (4, 3, 2):
         bpy.types.VIEW3D_MT_paint_grease_pencil.append(scene_tools.setup_storyboard)
     else:
         bpy.types.VIEW3D_MT_draw_gpencil.append(scene_tools.setup_storyboard)
+   
 
 def unregister():
     unregister_keymaps()
@@ -252,7 +238,9 @@ def unregister():
 
     bpy.types.SEQUENCER_MT_add.remove(scene_tools.draw_new_scene)
 
-    if bpy.app.version >= (4, 3, 0):
+    if bpy.app.version >= (4, 3, 2):
+        bpy.types.VIEW3D_MT_editor_menus.remove(scene_tools.setup_storyboard2)
+    elif (4, 3, 0) <= bpy.app.version < (4, 3, 2):
         bpy.types.VIEW3D_MT_paint_grease_pencil.remove(scene_tools.setup_storyboard)
     else:
         bpy.types.VIEW3D_MT_draw_gpencil.remove(scene_tools.setup_storyboard)
